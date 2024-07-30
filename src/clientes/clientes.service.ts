@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Cliente } from './entities/cliente.entity';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { ResultadoDto } from 'src/dto/resultado.dto';
@@ -56,5 +56,15 @@ export class ClientesService {
     } catch (error) {
       return { status: false, mensagem: 'Erro ao excluir cliente' };
     }
+  }
+
+  async buscar(searchText: string): Promise<Cliente[]> {
+    return this.clientesRepository.find({
+      where: [
+        {
+          name: Like(`%${searchText}%`),
+        },
+      ],
+    });
   }
 }

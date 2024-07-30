@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ClientesService } from './clientes.service';
 import { Cliente } from './entities/cliente.entity';
@@ -38,5 +39,10 @@ export class ClientesController {
   @Delete('deletar/:cpf')
   async excluir(@Param('cpf') cpf: string): Promise<ResultadoDto> {
     return this.clientesService.excluir(cpf);
+  }
+
+  @Get('buscar')
+  async buscar(@Query('searchText') searchText: string): Promise<Cliente[]> {
+    return this.clientesService.buscar(searchText);
   }
 }
