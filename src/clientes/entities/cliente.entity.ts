@@ -12,5 +12,5 @@ export class Cliente {
   cpf: string;
 
   @Column({ length: 100 })
-  telefone: string;
+  phone: string;
 }
