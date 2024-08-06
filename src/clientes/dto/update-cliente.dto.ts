@@ -5,4 +5,5 @@ export class UpdateClienteDto extends PartialType(CreateClienteDto) {
   name?: string;
   cpf?: string;
   phone?: string;
+  email?: string;
 }

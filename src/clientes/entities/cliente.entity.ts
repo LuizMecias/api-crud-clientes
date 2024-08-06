@@ -13,4 +13,7 @@ export class Cliente {
 
   @Column({ length: 100 })
   phone: string;
+
+  @Column({ length: 200 })
+  email: string;
 }
