@@ -22,7 +22,7 @@ export class ClientesService {
     }
 
     try {
-      const cliente = await this.clientesRepository.create(data);
+      const cliente = this.clientesRepository.create(data);
       await this.clientesRepository.save(cliente);
       return { status: true, mensagem: 'Cliente cadastrado com sucesso' };
     } catch (error) {
@@ -66,5 +66,9 @@ export class ClientesService {
         },
       ],
     });
+  }
+
+  async findOne(cpf: string): Promise<Cliente> {
+    return this.clientesRepository.findOne({ where: { cpf } });
   }
 }
