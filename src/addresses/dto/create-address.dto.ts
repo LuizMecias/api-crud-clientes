@@ -1,5 +1,5 @@
 export class CreateAddressDto {
-  clienteCpf: string;
+  clientId: number;
   cep: string;
   street: string;
   number: string;

@@ -1,11 +1,5 @@
-import { Cliente } from 'src/clientes/entities/cliente.entity';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-  ManyToOne,
-} from 'typeorm';
+import { Client } from 'src/clientes/entities/client.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Address {
@@ -39,7 +33,8 @@ export class Address {
   @Column({ length: 100 })
   reference: string;
 
-  @ManyToOne(() => Cliente, (cliente) => cliente.addresses)
-  @JoinColumn({ name: 'id_cliente', referencedColumnName: 'id' })
-  cliente?: Cliente;
+  @ManyToOne(() => Client, (client) => client.addresses, {
+    onDelete: 'CASCADE',
+  })
+  client?: Client;
 }

@@ -3,7 +3,7 @@ import { CreateAddressDto } from './create-address.dto';
 
 export class UpdateAddressDto extends PartialType(CreateAddressDto) {
   id: number;
-  clienteCpf: string;
+  clientId: number;
   cep: string;
   street: string;
   number: string;

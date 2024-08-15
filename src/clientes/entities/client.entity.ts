@@ -1,8 +1,8 @@
-import { Address } from './../../addresses/entities/address.entity';
+import { Address } from '../../addresses/entities/address.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
-export class Cliente {
+export class Client {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,6 +18,8 @@ export class Cliente {
   @Column({ length: 200 })
   email: string;
 
-  @OneToMany(() => Address, (address) => address.cliente)
+  @OneToMany(() => Address, (address) => address.client, {
+    cascade: true,
+  })
   addresses?: Address[];
 }

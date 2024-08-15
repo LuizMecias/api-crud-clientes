@@ -4,8 +4,8 @@ import { Like, Repository } from 'typeorm';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { ResultadoDto } from 'src/dto/resultado.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
-import { Cliente } from 'src/clientes/entities/cliente.entity';
-import { ClientesService } from 'src/clientes/clientes.service';
+import { Client } from 'src/clientes/entities/client.entity';
+import { ClientsService } from 'src/clientes/clients.service';
 
 @Injectable()
 export class AddressesService {
@@ -13,22 +13,24 @@ export class AddressesService {
     @Inject('ADDRESSES_REPOSITORY')
     private addressesRepository: Repository<Address>,
     @Inject()
-    private clientesService: ClientesService,
+    private clientsService: ClientsService,
   ) {
     console.log('Connected to the database');
   }
 
-  findAllByCpf(cpf: string): Promise<Address[]> {
-    return this.addressesRepository.find({ where: { cliente: { cpf } } });
+  async listAllById(id: number): Promise<Address[]> {
+    return this.addressesRepository.find({ where: { client: { id: id } } });
   }
 
-  async create(data: CreateAddressDto): Promise<ResultadoDto> {
+  async register(data: CreateAddressDto): Promise<ResultadoDto> {
     try {
-      const cliente: Cliente = await this.clientesService.findOne(
-        data.clienteCpf,
-      );
+      const client: Client = await this.clientsService.findOne(data.clientId);
+      if (!client) {
+        return { status: false, mensagem: 'Client não encontrado' };
+      }
+
       const address: Address = this.addressesRepository.create(data);
-      address.cliente = cliente;
+      address.client = client;
       await this.addressesRepository.save(address);
       return { status: true, mensagem: 'Endereço cadastrado com sucesso' };
     } catch (error) {
@@ -53,7 +55,7 @@ export class AddressesService {
     }
   }
 
-  async excluir(id: number): Promise<ResultadoDto> {
+  async delete(id: number): Promise<ResultadoDto> {
     try {
       const address = await this.addressesRepository.findOne({
         where: { id: id },
@@ -69,11 +71,10 @@ export class AddressesService {
     }
   }
 
-  async buscar(cpf: string, searchInput: string): Promise<Address[]> {
-    console.log(cpf, searchInput);
+  async search(id: number, searchInput: string): Promise<Address[]> {
     return this.addressesRepository.find({
       where: {
-        cliente: { cpf: cpf },
+        client: { id: id },
         street: Like(`%${searchInput}%`),
       },
     });

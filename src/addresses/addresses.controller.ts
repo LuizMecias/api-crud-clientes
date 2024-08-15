@@ -18,17 +18,17 @@ import { UpdateAddressDto } from './dto/update-address.dto';
 export class AddressesController {
   constructor(private readonly addressesService: AddressesService) {}
 
-  @Get('/listar/:cpf')
-  async findAllByCpf(@Param('cpf') cpf: string): Promise<Address[]> {
-    return this.addressesService.findAllByCpf(cpf);
+  @Get('/list/:id')
+  async listAllById(@Param('id') id: number): Promise<Address[]> {
+    return this.addressesService.listAllById(id);
   }
 
-  @Post('/cadastrar')
-  async create(@Body() data: CreateAddressDto): Promise<ResultadoDto> {
-    return this.addressesService.create(data);
+  @Post('/register')
+  async cregister(@Body() data: CreateAddressDto): Promise<ResultadoDto> {
+    return this.addressesService.register(data);
   }
 
-  @Put('/atualizar/:id')
+  @Put('/update/:id')
   async update(
     @Param('id') id: number,
     @Body() data: UpdateAddressDto,
@@ -36,16 +36,16 @@ export class AddressesController {
     return this.addressesService.update(id, data);
   }
 
-  @Delete('deletar/:id')
-  async excluir(@Param('id') id: number): Promise<ResultadoDto> {
-    return this.addressesService.excluir(id);
+  @Delete('delete/:id')
+  async delete(@Param('id') id: number): Promise<ResultadoDto> {
+    return this.addressesService.delete(id);
   }
 
-  @Get('buscar/:cpf')
-  async buscar(
-    @Param('cpf') cpf: string,
+  @Get('/search/:id')
+  async search(
+    @Param('id') id: number,
     @Query('searchInput') searchInput: string,
   ): Promise<Address[]> {
-    return this.addressesService.buscar(cpf, searchInput);
+    return this.addressesService.search(id, searchInput);
   }
 }
