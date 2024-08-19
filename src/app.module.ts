@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ClientsModule } from './clientes/clients.module';
-import { AddressesModule } from './addresses/addresses.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Client } from './clientes/entities/client.entity';
+import { AppService } from './app.service';
+import { ClientsModule } from './clients/clients.module';
+import { AddressesModule } from './addresses/addresses.module';
+import { DependentsModule } from './dependents/dependents.module';
+import { Client } from './clients/entities/client.entity';
 import { Address } from './addresses/entities/address.entity';
+import { Dependent } from './dependents/entities/dependent.entity';
 
 @Module({
   imports: [
     ClientsModule,
     AddressesModule,
+    DependentsModule,
+    TypeOrmModule.forFeature([Client, Address, Dependent]),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -18,7 +22,7 @@ import { Address } from './addresses/entities/address.entity';
       username: 'root',
       password: 'root',
       database: 'clientes',
-      entities: [Client, Address],
+      entities: [Client, Address, Dependent],
       synchronize: false,
     }),
   ],

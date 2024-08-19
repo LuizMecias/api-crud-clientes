@@ -18,17 +18,17 @@ import { UpdateAddressDto } from './dto/update-address.dto';
 export class AddressesController {
   constructor(private readonly addressesService: AddressesService) {}
 
-  @Get('/list/:id')
+  @Get('list/:id')
   async listAllById(@Param('id') id: number): Promise<Address[]> {
     return this.addressesService.listAllById(id);
   }
 
-  @Post('/register')
-  async cregister(@Body() data: CreateAddressDto): Promise<ResultadoDto> {
+  @Post('register')
+  async register(@Body() data: CreateAddressDto): Promise<ResultadoDto> {
     return this.addressesService.register(data);
   }
 
-  @Put('/update/:id')
+  @Put('update/:id')
   async update(
     @Param('id') id: number,
     @Body() data: UpdateAddressDto,
@@ -41,7 +41,7 @@ export class AddressesController {
     return this.addressesService.delete(id);
   }
 
-  @Get('/search/:id')
+  @Get('search/:id')
   async search(
     @Param('id') id: number,
     @Query('searchInput') searchInput: string,

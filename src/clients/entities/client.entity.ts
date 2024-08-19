@@ -1,5 +1,6 @@
+import { Column, PrimaryGeneratedColumn, OneToMany, Entity } from 'typeorm';
 import { Address } from '../../addresses/entities/address.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Dependent } from '../../dependents/entities/dependent.entity';
 
 @Entity()
 export class Client {
@@ -22,4 +23,9 @@ export class Client {
     cascade: true,
   })
   addresses?: Address[];
+
+  @OneToMany(() => Dependent, (dependent) => dependent.client, {
+    cascade: true,
+  })
+  dependents?: Dependent[];
 }
