@@ -8,13 +8,16 @@ import { DependentsModule } from './dependents/dependents.module';
 import { Client } from './clients/entities/client.entity';
 import { Address } from './addresses/entities/address.entity';
 import { Dependent } from './dependents/entities/dependent.entity';
+import { PhonesModule } from './phones/phones.module';
+import { Phone } from './phones/entities/phone.entity';
 
 @Module({
   imports: [
     ClientsModule,
     AddressesModule,
     DependentsModule,
-    TypeOrmModule.forFeature([Client, Address, Dependent]),
+    PhonesModule,
+    TypeOrmModule.forFeature([Client, Address, Dependent, Phone]),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -22,7 +25,7 @@ import { Dependent } from './dependents/entities/dependent.entity';
       username: 'root',
       password: 'root',
       database: 'clientes',
-      entities: [Client, Address, Dependent],
+      entities: [Client, Address, Dependent, Phone],
       synchronize: false,
     }),
   ],

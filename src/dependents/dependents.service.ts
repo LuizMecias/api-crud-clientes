@@ -25,6 +25,7 @@ export class DependentsService {
   async register(data: CreateDependentDto): Promise<ResultadoDto> {
     try {
       const client: Client = await this.clientsService.findOne(data.clientId);
+
       if (!client) {
         return { status: false, mensagem: 'Client não encontrado' };
       }
@@ -44,11 +45,17 @@ export class DependentsService {
       const dependent = await this.dependentsRepository.findOne({
         where: { id: id },
       });
+      const client: Client = await this.clientsService.findOne(data.clientId);
+
+      if (!client) {
+        return { status: false, mensagem: 'Client não encontrado' };
+      }
       if (!dependent) {
         return { status: false, mensagem: 'Dependente não encontrado' };
       }
 
-      await this.dependentsRepository.update(dependent, data);
+      dependent.client = client;
+      await this.dependentsRepository.update(dependent, { name: data.name });
       return { status: true, mensagem: 'Dependente alterado com sucesso' };
     } catch (error) {
       return { status: false, mensagem: 'Erro ao alterar dependente' };

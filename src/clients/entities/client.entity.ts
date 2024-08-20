@@ -1,6 +1,7 @@
 import { Column, PrimaryGeneratedColumn, OneToMany, Entity } from 'typeorm';
 import { Address } from '../../addresses/entities/address.entity';
 import { Dependent } from '../../dependents/entities/dependent.entity';
+import { Phone } from 'src/phones/entities/phone.entity';
 
 @Entity()
 export class Client {
@@ -13,19 +14,21 @@ export class Client {
   @Column({ length: 100 })
   cpf: string;
 
-  @Column({ length: 100 })
-  phone: string;
-
   @Column({ length: 200 })
   email: string;
+
+  @OneToMany(() => Phone, (phone) => phone.client, {
+    cascade: true,
+  })
+  phones: Phone[];
 
   @OneToMany(() => Address, (address) => address.client, {
     cascade: true,
   })
-  addresses?: Address[];
+  addresses: Address[];
 
   @OneToMany(() => Dependent, (dependent) => dependent.client, {
     cascade: true,
   })
-  dependents?: Dependent[];
+  dependents: Dependent[];
 }

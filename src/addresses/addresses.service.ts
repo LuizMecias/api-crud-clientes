@@ -25,6 +25,7 @@ export class AddressesService {
   async register(data: CreateAddressDto): Promise<ResultadoDto> {
     try {
       const client: Client = await this.clientsService.findOne(data.clientId);
+
       if (!client) {
         return { status: false, mensagem: 'Client não encontrado' };
       }
@@ -44,11 +45,19 @@ export class AddressesService {
       const address = await this.addressesRepository.findOne({
         where: { id: id },
       });
+      const client: Client = await this.clientsService.findOne(data.clientId);
+
+      if (!client) {
+        return { status: false, mensagem: 'Client não encontrado' };
+      }
       if (!address) {
         return { status: false, mensagem: 'Endereço não encontrado' };
       }
 
-      await this.addressesRepository.update(address, data);
+      address.client = client;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { clientId, ...rest } = data;
+      await this.addressesRepository.update(address, rest);
       return { status: true, mensagem: 'Endereço alterado com sucesso' };
     } catch (error) {
       return { status: false, mensagem: 'Erro ao alterar endereço' };
