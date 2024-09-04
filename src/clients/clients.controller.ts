@@ -16,16 +16,16 @@ import { UpdateClientDto } from './dto/update-client.dto';
 
 @Controller('clients')
 export class ClientsController {
-  constructor(private readonly clientesService: ClientsService) {}
+  constructor(private readonly clientsService: ClientsService) {}
 
   @Get('list')
   async listAll(): Promise<Client[]> {
-    return this.clientesService.listAll();
+    return this.clientsService.listAll();
   }
 
   @Post('register')
   async register(@Body() data: CreateClientDto): Promise<ResultadoDto> {
-    return this.clientesService.register(data);
+    return this.clientsService.register(data);
   }
 
   @Put('update/:id')
@@ -33,16 +33,21 @@ export class ClientsController {
     @Param('id') id: number,
     @Body() data: UpdateClientDto,
   ): Promise<ResultadoDto> {
-    return this.clientesService.update(id, data);
+    return this.clientsService.update(id, data);
   }
 
   @Delete('delete/:id')
   async delete(@Param('id') id: number): Promise<ResultadoDto> {
-    return this.clientesService.delete(id);
+    return this.clientsService.delete(id);
   }
 
   @Get('search')
   async search(@Query('searchInput') searchInput: string): Promise<Client[]> {
-    return this.clientesService.search(searchInput);
+    return this.clientsService.search(searchInput);
+  }
+
+  @Get('report')
+  async getAllClients(): Promise<Client[]> {
+    return this.clientsService.getAllClients();
   }
 }

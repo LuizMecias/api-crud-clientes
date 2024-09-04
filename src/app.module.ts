@@ -10,6 +10,10 @@ import { Address } from './addresses/entities/address.entity';
 import { Dependent } from './dependents/entities/dependent.entity';
 import { PhonesModule } from './phones/phones.module';
 import { Phone } from './phones/entities/phone.entity';
+import { ProductsModule } from './products/products.module';
+import { Product } from './products/entities/product.entity';
+import { OrdersModule } from './orders/orders.module';
+import { Order } from './orders/entities/order.entity';
 
 @Module({
   imports: [
@@ -17,7 +21,14 @@ import { Phone } from './phones/entities/phone.entity';
     AddressesModule,
     DependentsModule,
     PhonesModule,
-    TypeOrmModule.forFeature([Client, Address, Dependent, Phone]),
+    TypeOrmModule.forFeature([
+      Client,
+      Address,
+      Dependent,
+      Phone,
+      Product,
+      Order,
+    ]),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -25,9 +36,11 @@ import { Phone } from './phones/entities/phone.entity';
       username: 'root',
       password: 'root',
       database: 'clientes',
-      entities: [Client, Address, Dependent, Phone],
+      entities: [Client, Address, Dependent, Phone, Product, Order],
       synchronize: false,
     }),
+    ProductsModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

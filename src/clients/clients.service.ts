@@ -75,4 +75,15 @@ export class ClientsService {
   async findOne(id: number): Promise<Client> {
     return this.clientsRepository.findOne({ where: { id: id } });
   }
+
+  async getAllClients(): Promise<Client[]> {
+    return this.clientsRepository
+      .createQueryBuilder('clients')
+      .leftJoinAndSelect('clients.phones', 'phones')
+      .leftJoinAndSelect('clients.addresses', 'addresses')
+      .leftJoinAndSelect('clients.dependents', 'dependents')
+      .leftJoinAndSelect('clients.orders', 'orders')
+      .leftJoinAndSelect('orders.products', 'products')
+      .getMany();
+  }
 }
