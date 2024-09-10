@@ -1,3 +1,4 @@
+import { OrderProductsService } from './../order-products/order-products.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { Repository } from 'typeorm';
@@ -13,6 +14,8 @@ export class OrdersService {
     private ordersRepository: Repository<Order>,
     @Inject()
     private clientsService: ClientsService,
+    @Inject()
+    private orderProductsService: OrderProductsService,
   ) {}
 
   async listAll(): Promise<Order[]> {
@@ -30,18 +33,17 @@ export class OrdersService {
       const order: Order = this.ordersRepository.create(data);
       order.client = client;
       await this.ordersRepository.save(order);
-      for(const orderProduct of data.orderProducts) {
+
+      for (const orderProduct of data.orderProducts) {
         order.orderProducts.push(orderProduct);
         await this.ordersRepository.save(order);
+        await this.orderProductsService.register(orderProduct);
       }
-      return { status: true, mensagem: 'ordere cadastrado com sucesso' };
+
+      return { status: true, mensagem: 'Compra cadastrada com sucesso' };
     } catch (error) {
       console.log(error);
-      return { status: false, mensagem: 'Erro ao cadastrar ordere' };
+      return { status: false, mensagem: 'Erro ao cadastrar Compra' };
     }
-  }
-
-  async findOne(id: number): Promise<Order> {
-    return this.ordersRepository.findOne({ where: { id: id } });
   }
 }

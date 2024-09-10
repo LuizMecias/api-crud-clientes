@@ -5,8 +5,6 @@ import { OrderProduct } from './entities/order-product.entity';
 import { CreateOrderProductDto } from './dto/create-order-product.dto';
 import { ResultadoDto } from 'src/dto/resultado.dto';
 import { Product } from 'src/products/entities/product.entity';
-import { Order } from 'src/orders/entities/order.entity';
-import { OrdersService } from 'src/orders/orders.service';
 
 @Injectable()
 export class OrderProductsService {
@@ -15,8 +13,6 @@ export class OrderProductsService {
     private orderProductsRepository: Repository<OrderProduct>,
     @Inject()
     private productsService: ProductsService,
-    @Inject()
-    private ordersService: OrdersService,
   ) {}
 
   findAll() {
@@ -30,9 +26,6 @@ export class OrderProductsService {
     if (!data.product || !data.product.id) {
       return { status: false, mensagem: 'ID do produto não fornecido' };
     }
-    if (!data.order || !data.order.id) {
-      return { status: false, mensagem: 'ID do pedido não fornecido' };
-    }
 
     const product: Product = await this.productsService.findOne(
       data.product?.id,
@@ -40,17 +33,10 @@ export class OrderProductsService {
     if (!product) {
       return { status: false, mensagem: 'Produto não encontrado' };
     }
-    const order: Order = await this.ordersService.findOne(data.order?.id);
-    if (!order) {
-      return { status: false, mensagem: 'Pedido não encontrada' };
-    }
-
-    // console.log(data);
 
     try {
       const orderProduct = this.orderProductsRepository.create(data);
       orderProduct.product = product;
-      orderProduct.order = order;
 
       await this.orderProductsRepository.save(orderProduct);
       return { status: true, mensagem: 'Produto cadastrado com sucesso' };
