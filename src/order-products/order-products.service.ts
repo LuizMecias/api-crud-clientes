@@ -16,7 +16,7 @@ export class OrderProductsService {
   ) {}
 
   findAll() {
-    return `This action returns all orderProducts`;
+    return this.orderProductsRepository.find();
   }
 
   async register(data: CreateOrderProductDto): Promise<ResultadoDto> {

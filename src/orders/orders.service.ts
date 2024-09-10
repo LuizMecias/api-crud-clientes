@@ -34,10 +34,16 @@ export class OrdersService {
       order.client = client;
       await this.ordersRepository.save(order);
 
+      const savedOrder = order;
+
       for (const orderProduct of data.orderProducts) {
-        order.orderProducts.push(orderProduct);
-        await this.ordersRepository.save(order);
-        await this.orderProductsService.register(orderProduct);
+        const createdOrderProduct = await this.orderProductsService.register({
+          ...orderProduct,
+          order: savedOrder,
+        });
+        if (!createdOrderProduct.status) {
+          return createdOrderProduct;
+        }
       }
 
       return { status: true, mensagem: 'Compra cadastrada com sucesso' };
