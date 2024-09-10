@@ -1,5 +1,5 @@
-import { Order } from 'src/orders/entities/order.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { OrderProduct } from 'src/order-products/entities/order-product.entity';
 
 @Entity()
 export class Product {
@@ -9,9 +9,9 @@ export class Product {
   @Column({ length: 100 })
   name: string;
 
-  @Column({ length: 100 })
-  price: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
 
-  @ManyToMany(() => Order, (order) => order.products)
-  orders: Order[];
+  @OneToMany(() => OrderProduct, (orderProducts) => orderProducts.product)
+  orderProducts: OrderProduct[];
 }

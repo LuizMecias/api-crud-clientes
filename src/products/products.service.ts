@@ -71,4 +71,8 @@ export class ProductsService {
       ],
     });
   }
+
+  async findOne(id: number): Promise<Product> {
+    return this.productsRepository.findOne({ where: { id: id } });
+  }
 }

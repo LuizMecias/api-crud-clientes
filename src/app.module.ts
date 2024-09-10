@@ -14,6 +14,8 @@ import { ProductsModule } from './products/products.module';
 import { Product } from './products/entities/product.entity';
 import { OrdersModule } from './orders/orders.module';
 import { Order } from './orders/entities/order.entity';
+import { OrderProductsModule } from './order-products/order-products.module';
+import { OrderProduct } from './order-products/entities/order-product.entity';
 
 @Module({
   imports: [
@@ -21,6 +23,9 @@ import { Order } from './orders/entities/order.entity';
     AddressesModule,
     DependentsModule,
     PhonesModule,
+    ProductsModule,
+    OrdersModule,
+    OrderProductsModule,
     TypeOrmModule.forFeature([
       Client,
       Address,
@@ -28,6 +33,7 @@ import { Order } from './orders/entities/order.entity';
       Phone,
       Product,
       Order,
+      OrderProduct,
     ]),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -36,11 +42,17 @@ import { Order } from './orders/entities/order.entity';
       username: 'root',
       password: 'root',
       database: 'clientes',
-      entities: [Client, Address, Dependent, Phone, Product, Order],
-      synchronize: false,
+      entities: [
+        Client,
+        Address,
+        Dependent,
+        Phone,
+        Product,
+        Order,
+        OrderProduct,
+      ],
+      synchronize: true,
     }),
-    ProductsModule,
-    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

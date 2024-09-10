@@ -83,7 +83,8 @@ export class ClientsService {
       .leftJoinAndSelect('clients.addresses', 'addresses')
       .leftJoinAndSelect('clients.dependents', 'dependents')
       .leftJoinAndSelect('clients.orders', 'orders')
-      .leftJoinAndSelect('orders.products', 'products')
+      .leftJoinAndSelect('orders.orderProducts', 'orderProducts')
+      .leftJoinAndSelect('orderProducts.product', 'products')
       .getMany();
   }
 }

@@ -1,22 +1,26 @@
-import { Client } from 'src/clients/entities/client.entity';
-import { Product } from 'src/products/entities/product.entity';
 import {
+  Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Client } from 'src/clients/entities/client.entity';
+import { OrderProduct } from 'src/order-products/entities/order-product.entity';
 
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Client, (client) => client.orders)
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  dateTime: Date;
+
+  @ManyToOne(() => Client, (client) => client.orders, {
+    onDelete: 'CASCADE',
+  })
   client: Client;
 
-  @ManyToMany(() => Product, (product) => product.orders)
-  @JoinTable({ name: 'order_product' })
-  products: Product[];
+  @OneToMany(() => OrderProduct, (orderProducts) => orderProducts.order)
+  orderProducts: OrderProduct[];
 }
